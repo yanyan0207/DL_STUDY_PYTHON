@@ -21,8 +21,10 @@ class simple_perceptron:
 
     def loss(self,x,y,train=False,softmax=False):
         work = x
+        self.output_list = []
         for layer in self.layers:
             work = layer.foward(work,train)
+            self.output_list.append(work)
         loss = np.sum(np.log(np.maximum(work[np.arange(len(y)),y],0.01))) * -1
         if softmax:
             return loss,work
@@ -56,9 +58,9 @@ class simple_perceptron:
         print("loss",loss)
         print("acc",acc)
         work = np.eye(self.class_num)[y]
-        for layer in reversed(self.layers):
+        for layer,output in reversed(list(zip(self.layers,self.output_list))):
             #print("backword",work)
-            work = layer.backword(work)
+            work = layer.backword(work,output)
         #print("backword",work)
         self.layers[0].update(-0.01)
 

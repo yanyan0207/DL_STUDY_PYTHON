@@ -9,17 +9,14 @@ class Affine:
         self.B = np.random.rand((out_num)) - 0.5 if B is None else np.array(B) 
 
     def foward(self,x,train):
-        #print(x.shape)
-        if train:
-            self.x = np.asarray(x).T
         return np.dot(x,self.W) + self.B
 
-    def backword(self,out):
+    def backword(self,out,input,output):
         #print("Affine1 backword out",out)
         # biasの勾配は下層の勾配そのまま
         self.db = np.sum(out,axis=0)
         # Wの勾配は。。。
-        self.dw = np.dot(self.x,out)
+        self.dw = np.dot(input.T,out)
 
         grad = np.dot(out,self.W.T)
         return grad

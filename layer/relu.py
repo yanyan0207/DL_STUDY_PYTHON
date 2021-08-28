@@ -7,21 +7,16 @@ class Relu:
     def __init__(self):
         pass
     def foward(self,x,train):
-        #print(x.shape)
-
-        if train:
-            self.mask = x < 0
         return np.maximum(0,x)
-    def backword(self,out):
-        dout = out.copy()
-        dout[self.mask] = 0
-        return dout
 
-    
+    def backword(self,out,input,output):
+        out[output<0] = 0
+        return out
+
 if __name__=="__main__":
     layer = Relu()
     x = np.arange(100) / 50 -1
-    z = layer.foward(x)
+    z = layer.foward(x,False)
     dz = np.gradient(z,x)
     out = layer.backword(z)
     plt.plot(x,z)

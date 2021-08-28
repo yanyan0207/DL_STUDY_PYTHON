@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from utils.measure_time import *
 
 class Network:
     def __init__(self,class_num):
@@ -9,17 +10,25 @@ class Network:
     def addLayer(self,layer):
         self.layers.append(layer)
 
-    def predict(self,x,train=False):
+    def predict(self,x):
         work = x
         for layer in self.layers:
-            work = layer.foward(work,train)
+            work = layer.foward(work,False)
         return work
 
     def loss(self,x,y,train=False,softmax=False):
+        self.data_list = [x]
         work = x
-        for layer in self.layers:
+        for i,layer in enumerate(self.layers):
+            startTime("train loss:" + str(i))
             work = layer.foward(work,train)
+            self.data_list.append(work)
+            endTime("train loss:" + str(i))
+
+        startTime("logloss:")
         loss = np.sum(np.log(np.maximum(work[np.arange(len(y)),y],0.01))) * -1
+        endTime("logloss:")
+
         if softmax:
             return loss,work
         else:
@@ -34,14 +43,21 @@ class Network:
         print("acc",acc)
         self.historys.append((loss,acc))
         work = np.eye(self.class_num)[y]
-        for layer in reversed(self.layers):
+
+        for i in reversed(range(len(self.layers))):
+            startTime("train backword:" + str(i))
+            layer = self.layers[i]
+            input = self.data_list[i]
+            output = self.data_list[i+1]
+
             #print("backword",work)
-            work = layer.backword(work)
+            work = layer.backword(work,input,output)
+            endTime("train backword:" + str(i))
         #print("backword",work)
 
         for layer in self.layers:
             if getattr(layer,"update", None):
-                layer.update(-0.0001)
+                layer.update(-0.00001)
 
 if __name__=="__main__":
     from layer.affin import Affine

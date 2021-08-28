@@ -10,11 +10,9 @@ class Softmax:
         x = np.exp(x)
         softmax = x / np.sum(x,axis=0)
         softmax = softmax.T
-        if train:
-            self.softmax = softmax
         return softmax
     
-    def backword(self,y):
-        return self.softmax - y
+    def backword(self,y,input,output):
+        return output - y
 
 
