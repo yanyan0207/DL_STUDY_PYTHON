@@ -10,7 +10,7 @@ class Relu:
         return np.maximum(0,x)
 
     def backword(self,out,input,output):
-        out[output<0] = 0
+        out[input<0] = 0
         return out
 
 if __name__=="__main__":
