@@ -1,5 +1,6 @@
 #!python3
 
+from os import error
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -8,6 +9,26 @@ class Affine:
         self.W = np.random.rand(in_num*out_num).reshape(in_num,out_num) - 0.5 if W is None else np.array(W)
         self.B = np.random.rand((out_num)) - 0.5 if B is None else np.array(B) 
 
+    def getWeights(self):
+        return {
+            "W" : self.W,
+            "B" : self.B
+        }
+
+    def setWeight(self,name,weight):
+        if name == "W":
+            self.W = weight
+        elif name == "B":
+            self.B = weight
+        else:
+            raise error(name + " unkown weight name")
+
+    def getWeightsGradient(self):
+        return {
+            "W" : self.dw,
+            "B" : self.db
+        }
+        
     def foward(self,x,train):
         return np.dot(x,self.W) + self.B
 

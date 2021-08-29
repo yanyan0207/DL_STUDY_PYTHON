@@ -13,6 +13,6 @@ class Softmax:
         return softmax
     
     def backword(self,y,input,output):
-        return output - y
+        return (output - y) / len(y)
 
 
