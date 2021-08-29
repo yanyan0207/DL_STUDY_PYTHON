@@ -36,7 +36,7 @@ class Network:
         else:
             return loss
 
-    def train(self,x,y):
+    def train(self,x,y,update_params=True):
         loss,softmax = self.loss(x,y,train=True,softmax=True)
         pred = np.argmax(softmax,axis=1)
         acc = np.sum(pred == y) / len(y)
@@ -56,9 +56,10 @@ class Network:
             endTime("train backword:" + name)
         #print("backword",work)
 
-        for key, layer in self.layers.items():
-            if getattr(layer,"update", None):
-                layer.update(-0.1)
+        if update_params:
+            for key, layer in self.layers.items():
+                if getattr(layer,"update", None):
+                    layer.update(-0.1)
 
     def getWeights(self):
         weighs = OrderedDict()
