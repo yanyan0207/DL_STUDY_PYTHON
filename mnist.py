@@ -11,7 +11,7 @@ from utils.measure_time import *
 import sys
 
 def calc_dw_test(x,y):
-    print("y",y)
+    #print("y",y)
     calc_dw = network.calcGradient(x,y)
     network.train(x,y,update_params=False)
     dw = network.getWeightsGradient()
@@ -39,11 +39,14 @@ if __name__=="__main__":
 
     network = Network(class_num=10)
     if True:
-        network.addLayer(CNN(shape=(3,3),channel_num = 1,filter_num=2))
+        network.addLayer(CNN(shape=(3,3),channel_num = 1,filter_num=5))
+        network.addLayer(MaxPooling(shape=(2,2)))
+        network.addLayer(Relu())
+        network.addLayer(CNN(shape=(2,2),channel_num = 5,filter_num=1))
         network.addLayer(MaxPooling(shape=(2,2)))
         network.addLayer(Relu())
         network.addLayer(Flatten())
-        network.addLayer(Affine(169*2,10))
+        network.addLayer(Affine(36,10))
         network.addLayer(Softmax())
 
         x_train = np.expand_dims(x_train,-1)
@@ -57,14 +60,14 @@ if __name__=="__main__":
         network.addLayer(Softmax())
 
     CALC_DW_SIZE=2
-    MINI_BATCH_SIZE=1
+    MINI_BATCH_SIZE=60000
     EPOCH=1
 
     if CALC_DW_SIZE > 0:
         startTime("calc dw")
         calc_dw_test(x_train[:CALC_DW_SIZE],y_train[:CALC_DW_SIZE])
         endTime("calc dw")
-        sys.exit()
+#        sys.exit()
 
     lastacc = 0
     for i in range(EPOCH):
@@ -85,5 +88,5 @@ if __name__=="__main__":
                 print(j,np.sum(preds==y_test)/len(y_test))
                 lastacc = np.sum(preds==y_test)/len(y_test)
                 endTime("test")
-
+    print("lastacc",lastacc)
     printTime()

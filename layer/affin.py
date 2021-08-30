@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 class Affine:
     def __init__(self,in_num=None,out_num=None,W=None,B=None):
-        self.W = np.random.rand(in_num*out_num).reshape(in_num,out_num) - 0.5 if W is None else np.array(W)
+        self.W = (np.random.rand(in_num,out_num) - 0.5) if W is None else np.array(W)
         self.B = np.random.rand((out_num)) - 0.5 if B is None else np.array(B) 
 
     def getWeights(self):

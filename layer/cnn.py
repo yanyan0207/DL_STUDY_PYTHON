@@ -7,7 +7,7 @@ from numpy.lib.function_base import copy
 
 class CNN:
     def __init__(self,shape,channel_num,filter_num):
-        self.W = (np.random.rand(shape[0]*shape[1]*channel_num,filter_num) - 0.5) * 0.01
+        self.W = (np.random.rand(shape[0]*shape[1]*channel_num,filter_num) - 0.5)
         self.shape = shape
         self.channel_num = channel_num
         self.filter_num = filter_num
@@ -67,7 +67,7 @@ class CNN:
         grad = [self.calc(work,row,col,self.shape,Wrev)
             for row in range(input.shape[1]) for col in range(input.shape[2])]
         grad = np.array(grad)
-        #grad = grad.transpose(1,2,0)
+        grad = grad.transpose(1,0,2)
         grad = grad.reshape(input.shape)
 
         self.dw = np.zeros((self.shape[0],self.shape[1],self.channel_num,self.filter_num))
@@ -90,11 +90,29 @@ class CNN:
         self.W += self.dw * alpha
 
 if __name__=="__main__":
-    layer = CNN((2,2),2,1)
+    layer = CNN((2,2),1,1)
     print(layer.W)
-    layer.W = np.arange(8).T
+    W = np.arange(1,5).reshape(4,1)
+    layer.W = W.copy()
 
-    input = np.arange(16).reshape(2,2,2,2)
+    input = np.arange(9).reshape(1,3,3,1)
+    print("W",layer.W)
+    print("input",input)
+
     output = layer.forward(input,True)
     print(output)
-    print(layer.backword(output,input,output))
+    out = np.arange(1,5).reshape(1,2,2,1)
+    print(layer.backward(out,input,output))
+
+    base = np.sum(out * output)
+    grad = np.zeros(input.size)
+    for i in range(input.size):
+        layer.W = W.copy()
+        input_copy = input.copy()
+        input_copy = input_copy.reshape(-1)
+        input_copy[i] += 1
+        input_copy = input_copy.reshape(input.shape)
+        output = layer.forward(input_copy,True)
+        grad[i] = np.sum(output * out) - base
+
+    print("calc grad",grad)
