@@ -32,8 +32,8 @@ class Affine:
     def forward(self,x,train):
         return np.dot(x,self.W) + self.B
 
-    def backword(self,out,input,output):
-        #print("Affine1 backword out",out)
+    def backward(self,out,input,output):
+        #print("Affine1 backward out",out)
         # biasの勾配は下層の勾配そのまま
         self.db = np.sum(out,axis=0)
         # Wの勾配は。。。
@@ -51,5 +51,5 @@ if __name__=="__main__":
     x = [[1,2,3]]
     output = layer.forward(x,True)
     print(output)
-    dout = layer.backword(output)
+    dout = layer.backward(output)
     print(dout)

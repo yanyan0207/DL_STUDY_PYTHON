@@ -12,7 +12,7 @@ class Softmax:
         softmax = softmax.T
         return softmax
     
-    def backword(self,y,input,output):
+    def backward(self,y,input,output):
         return (output - y) / len(y)
 
 

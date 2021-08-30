@@ -59,9 +59,9 @@ class simple_perceptron:
         print("acc",acc)
         work = np.eye(self.class_num)[y]
         for layer,output in reversed(list(zip(self.layers,self.output_list))):
-            #print("backword",work)
-            work = layer.backword(work,output)
-        #print("backword",work)
+            #print("backward",work)
+            work = layer.backward(work,output)
+        #print("backward",work)
         self.layers[0].update(-0.01)
 
 if __name__=="__main__":

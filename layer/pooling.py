@@ -18,7 +18,7 @@ class MaxPooling:
             self.maxpos = maxpos
         return out
 
-    def backword(self,out,input,output):
+    def backward(self,out,input,output):
         row = self.shape[0]
         col = self.shape[1]
         grad = np.zeros((out.size,row*col))

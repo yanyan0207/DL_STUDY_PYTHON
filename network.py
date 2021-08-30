@@ -23,7 +23,7 @@ class Network:
         work = x
         for name,layer in self.layers.items():
             startTime("train loss:" + name)
-            work = layer.forward(work,train)
+            work = layer.forward(work.copy(),train)
             self.data_list.append(work)
             endTime("train loss:" + name)
 
@@ -47,14 +47,14 @@ class Network:
         work = np.eye(self.class_num)[y]
 
         for i,(name,layer) in enumerate(reversed(self.layers.items())):
-            startTime("train backword:" + name)
+            startTime("train backward:" + name)
             input = self.data_list[len(self.layers) - i - 1]
             output = self.data_list[len(self.layers) - i]
 
-            #print("backword",work)
-            work = layer.backword(work,input,output)
-            endTime("train backword:" + name)
-        #print("backword",work)
+            #print("backward",work)
+            work = layer.backward(work.copy(),input.copy(),output.copy())
+            endTime("train backward:" + name)
+        #print("backward",work)
 
         if update_params:
             for key, layer in self.layers.items():

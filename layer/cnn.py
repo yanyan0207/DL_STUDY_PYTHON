@@ -43,7 +43,7 @@ class CNN:
         out = out.reshape(x.shape[0],out_rows,out_cols,self.filter_num)
         return out
 
-    def backword(self,out,input,output):
+    def backward(self,out,input,output):
         # パディング
         pad_row = self.shape[0] - 1
         pad_col = self.shape[1] - 1

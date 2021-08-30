@@ -9,7 +9,7 @@ class Relu:
     def forward(self,x,train):
         return np.maximum(0,x)
 
-    def backword(self,out,input,output):
+    def backward(self,out,input,output):
         out[input<0] = 0
         return out
 
@@ -18,7 +18,7 @@ if __name__=="__main__":
     x = np.arange(100) / 50 -1
     z = layer.forward(x,False)
     dz = np.gradient(z,x)
-    out = layer.backword(z)
+    out = layer.backward(z)
     plt.plot(x,z)
     plt.plot(x,dz)
     plt.plot(x,out)
