@@ -34,7 +34,7 @@ class CNN:
             "W" : self.dw,
         }
 
-    def foward(self,x,train):
+    def forward(self,x,train):
         out_rows = x.shape[1] - self.shape[0] + 1
         out_cols = x.shape[2] - self.shape[1] + 1
         out = [self.calc(x,row,col,self.shape,self.W) for row in range(out_rows) for col in range(out_cols)]
@@ -95,6 +95,6 @@ if __name__=="__main__":
     layer.W = np.arange(8).T
 
     input = np.arange(16).reshape(2,2,2,2)
-    output = layer.foward(input,True)
+    output = layer.forward(input,True)
     print(output)
     print(layer.backword(output,input,output))

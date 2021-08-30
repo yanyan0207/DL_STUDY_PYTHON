@@ -16,14 +16,14 @@ class simple_perceptron:
     def predict(self,x,train=False):
         work = x
         for layer in self.layers:
-            work = layer.foward(work,train)
+            work = layer.forward(work,train)
         return work
 
     def loss(self,x,y,train=False,softmax=False):
         work = x
         self.output_list = []
         for layer in self.layers:
-            work = layer.foward(work,train)
+            work = layer.forward(work,train)
             self.output_list.append(work)
         loss = np.sum(np.log(np.maximum(work[np.arange(len(y)),y],0.01))) * -1
         if softmax:

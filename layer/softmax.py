@@ -4,7 +4,7 @@ class Softmax:
     def __init__(self):
         pass
 
-    def foward(self,x,train):
+    def forward(self,x,train):
         x = x.T
         x = x - np.max(x,axis=0)
         x = np.exp(x)

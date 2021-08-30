@@ -15,7 +15,7 @@ class Network:
     def predict(self,x):
         work = x
         for key,layer in self.layers.items():
-            work = layer.foward(work,False)
+            work = layer.forward(work,False)
         return work
 
     def loss(self,x,y,train=False,softmax=False):
@@ -23,7 +23,7 @@ class Network:
         work = x
         for name,layer in self.layers.items():
             startTime("train loss:" + name)
-            work = layer.foward(work,train)
+            work = layer.forward(work,train)
             self.data_list.append(work)
             endTime("train loss:" + name)
 

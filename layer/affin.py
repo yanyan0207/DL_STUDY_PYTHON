@@ -29,7 +29,7 @@ class Affine:
             "B" : self.db
         }
         
-    def foward(self,x,train):
+    def forward(self,x,train):
         return np.dot(x,self.W) + self.B
 
     def backword(self,out,input,output):
@@ -49,7 +49,7 @@ class Affine:
 if __name__=="__main__":
     layer = Affine(W=[[1,2],[3,4],[5,6]],B=[1,2])
     x = [[1,2,3]]
-    output = layer.foward(x,True)
+    output = layer.forward(x,True)
     print(output)
     dout = layer.backword(output)
     print(dout)

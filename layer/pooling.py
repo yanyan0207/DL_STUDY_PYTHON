@@ -5,7 +5,7 @@ class MaxPooling:
         self.shape = shape
         pass
 
-    def foward(self,x,train):
+    def forward(self,x,train):
         row = self.shape[0]
         col = self.shape[1]
         out = x.copy().reshape(x.shape[0],x.shape[1]//row,row,x.shape[2]//col,col,x.shape[3])
