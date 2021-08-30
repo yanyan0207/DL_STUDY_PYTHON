@@ -39,6 +39,7 @@ class CNN:
         out_cols = x.shape[2] - self.shape[1] + 1
         out = [self.calc(x,row,col,self.shape,self.W) for row in range(out_rows) for col in range(out_cols)]
         out = np.array(out)
+        out = out.transpose(1,0,2)
         out = out.reshape(x.shape[0],out_rows,out_cols,self.filter_num)
         return out
 

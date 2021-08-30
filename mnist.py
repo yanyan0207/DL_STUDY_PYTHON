@@ -56,16 +56,18 @@ if __name__=="__main__":
         network.addLayer(Affine(128,10))
         network.addLayer(Softmax())
 
-    CALC_DW_SIZE=1
+    CALC_DW_SIZE=2
     MINI_BATCH_SIZE=1
     EPOCH=1
 
+    if CALC_DW_SIZE > 0:
+        startTime("calc dw")
+        calc_dw_test(x_train[:CALC_DW_SIZE],y_train[:CALC_DW_SIZE])
+        endTime("calc dw")
+        sys.exit()
+
     lastacc = 0
     for i in range(EPOCH):
-        if CALC_DW_SIZE > 0:
-            startTime("calc dw")
-            calc_dw_test(x_train[:CALC_DW_SIZE],y_train[:CALC_DW_SIZE])
-            endTime("calc dw")
         for j in range(len(x_train) // MINI_BATCH_SIZE):
             x_train_batch = x_train[MINI_BATCH_SIZE*j:MINI_BATCH_SIZE*(j+1)]
             y_train_batch = y_train[MINI_BATCH_SIZE*j:MINI_BATCH_SIZE*(j+1)]
