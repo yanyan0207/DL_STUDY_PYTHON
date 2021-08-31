@@ -62,7 +62,7 @@ class simple_perceptron:
             #print("backward",work)
             work = layer.backward(work,output)
         #print("backward",work)
-        self.layers[0].update(-0.01)
+        self.layers[0].update(-0.1)
 
 if __name__=="__main__":
     x = np.random.rand(10000).reshape(-1,2) * 1 - 0.5

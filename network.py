@@ -41,8 +41,7 @@ class Network:
         pred = np.argmax(softmax,axis=1)
         acc = np.sum(pred == y) / len(y)
         #print(self.softmax,y)
-        print("loss",loss)
-        print("acc",acc)
+        print("\racc",acc,"loss",loss,end="")
         self.historys.append((loss,acc))
         work = np.eye(self.class_num)[y]
 

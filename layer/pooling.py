@@ -54,3 +54,18 @@ class MeanPooling:
         grad = grad.transpose(0,2,4,3,5,1)
         grad = grad.reshape(input.shape)
         return grad
+
+if __name__=="__main__":
+    from PIL import Image
+    from keras.datasets import mnist
+    (x_train, y_train), (x_test, y_test) = mnist.load_data()
+    x_train = np.expand_dims(x_train,axis=-1)
+    pooling = MaxPooling((2,2))
+    pooled = pooling.forward(x_train[:2],False)
+    print(pooled.shape)
+    pil_img = Image.fromarray(np.uint8(x_train[0,:,:,0]))
+    pil_img2 = Image.fromarray(np.uint8(pooled[0,:,:,0]))
+    pil_img.show()
+    pil_img2.show()
+    
+

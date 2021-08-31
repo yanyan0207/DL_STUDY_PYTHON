@@ -36,7 +36,6 @@ if __name__=="__main__":
     x_train = x_train / 256 - 0.5
     x_test = x_test / 256 - 0.5
 
-
     network = Network(class_num=10)
     if True:
         network.addLayer(CNN(shape=(3,3),channel_num = 1,filter_num=5))
@@ -60,8 +59,8 @@ if __name__=="__main__":
         network.addLayer(Softmax())
 
     CALC_DW_SIZE=2
-    MINI_BATCH_SIZE=60000
-    EPOCH=1
+    MINI_BATCH_SIZE=100
+    EPOCH=10
 
     if CALC_DW_SIZE > 0:
         startTime("calc dw")
@@ -71,22 +70,24 @@ if __name__=="__main__":
 
     lastacc = 0
     for i in range(EPOCH):
-        for j in range(len(x_train) // MINI_BATCH_SIZE):
+        for j in range(len(x_train - 1) // MINI_BATCH_SIZE + 1):
             x_train_batch = x_train[MINI_BATCH_SIZE*j:MINI_BATCH_SIZE*(j+1)]
             y_train_batch = y_train[MINI_BATCH_SIZE*j:MINI_BATCH_SIZE*(j+1)]
+            if x_train_batch.size == 0:
+                break
             startTime("train")
             network.train(x_train_batch,y_train_batch)
             endTime("train")
             
-            if j % 100 == 0:
-                startTime("test")
-                print(j,"lastacc",lastacc)
-                preds = np.zeros(len(x_test))
-                for k in range(len(x_test) // MINI_BATCH_SIZE):   
-                    pred = np.argmax(network.predict(x_test[k*MINI_BATCH_SIZE:(k+1)*MINI_BATCH_SIZE]),axis=1)
-                    preds[k*MINI_BATCH_SIZE:(k+1)*MINI_BATCH_SIZE] = pred
-                print(j,np.sum(preds==y_test)/len(y_test))
-                lastacc = np.sum(preds==y_test)/len(y_test)
-                endTime("test")
-    print("lastacc",lastacc)
+        startTime("test")
+        preds = np.zeros(len(x_test))
+        for k in range((len(x_test) - 1) // MINI_BATCH_SIZE + 1):
+            x_test_batch = x_test[k*MINI_BATCH_SIZE:(k+1)*MINI_BATCH_SIZE]
+            if x_test_batch.size == 0:
+                break
+            pred = np.argmax(network.predict(x_test_batch),axis=1)
+            preds[k*MINI_BATCH_SIZE:(k+1)*MINI_BATCH_SIZE] = pred
+        lastacc = np.sum(preds==y_test)/len(y_test)
+        endTime("test")
+        print("\nEpoch",i,"test acc",lastacc)
     printTime()
