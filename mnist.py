@@ -60,7 +60,7 @@ if __name__=="__main__":
 
     CALC_DW_SIZE=2
     MINI_BATCH_SIZE=100
-    EPOCH=10
+    EPOCH=2
 
     if CALC_DW_SIZE > 0:
         startTime("calc dw")
