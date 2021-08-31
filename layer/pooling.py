@@ -8,7 +8,7 @@ class MaxPooling:
     def forward(self,x,train):
         row = self.shape[0]
         col = self.shape[1]
-        out = x.copy().reshape(x.shape[0],x.shape[1]//row,row,x.shape[2]//col,col,x.shape[3])
+        out = x.reshape(x.shape[0],x.shape[1]//row,row,x.shape[2]//col,col,x.shape[3])
         out = out.transpose(0,1,3,5,2,4)
         out = out.reshape(-1,row*col)
         maxpos = np.argmax(out,axis=1)
@@ -36,7 +36,7 @@ class MeanPooling:
     def forward(self,x,train):
         row = self.shape[0]
         col = self.shape[1]
-        out = x.copy().reshape(x.shape[0],x.shape[1]//row,row,x.shape[2]//col,col,x.shape[3])
+        out = x.reshape(x.shape[0],x.shape[1]//row,row,x.shape[2]//col,col,x.shape[3])
         out = out.transpose(0,1,3,5,2,4)
         out = out.reshape(x.shape[0],x.shape[1]//row,x.shape[2]//col,x.shape[3],row*col)
         out = np.average(out,axis=-1)
